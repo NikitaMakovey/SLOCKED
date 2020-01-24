@@ -4,25 +4,25 @@
              xmlns:local="using:SLOCKED"
 			 x:Class="SLOCKED.MasterPage"
 			 Padding="0,40,0,0"
-			 IconImageSource="https://i.pinimg.com/474x/de/e1/52/dee1520eee99bfa538af3f6317a24571.jpg"
+			 IconImageSource="http://yandex.ru"
 			 Title="Personal Organiser">
     <StackLayout>
         <ListView x:Name="listView" x:FieldModifier="public">
            <ListView.ItemsSource>
                 <x:Array Type="{x:Type local:MasterPageItem}">
                     <local:MasterPageItem
-                        Title="Выбор города"
-                        IconSource="https://i.pinimg.com/474x/de/e1/52/dee1520eee99bfa538af3f6317a24571.jpg"
-                        TargetType="{x:Type local:MainPage}"
+                        Title="Поиск города"
+                        IconSource="http://yandex.ru"
+                        TargetType="{x:Type local:SearchPage}"
                     />
                     <local:MasterPageItem
                         Title="Главное"
-                        IconSource="https://i.pinimg.com/474x/de/e1/52/dee1520eee99bfa538af3f6317a24571.jpg"
+                        IconSource="http://yandex.ru"
                         TargetType="{x:Type local:MainPage}"
                     />
                     <local:MasterPageItem
                         Title="Обратно"
-                        IconSource="https://i.pinimg.com/474x/de/e1/52/dee1520eee99bfa538af3f6317a24571.jpg"
+                        IconSource="http://yandex.ru"
                         TargetType="{x:Type local:MainPage}"
                     />
                 </x:Array>

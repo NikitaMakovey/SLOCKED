@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SLOCKED;assembly=SLOCKED"
+    x:Class="SLOCKED.SearchPage"
+>
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar
+                BackgroundColor="DarkGray"
+                TextColor="Brown"
+                PlaceholderColor="Brown"
+                CancelButtonColor="Brown"
+                TextChanged="SearchBar_TextChanged"
+            ></SearchBar>
+            <ListView
+                x:Name="CityListView"
+            >  
+                <ListView.ItemTemplate>  
+                   <DataTemplate>  
+                       <ViewCell>  
+                           <StackLayout Orientation="Vertical">  
+                               <Label Text="{Binding name}" />  
+                               <Label Text="{Binding country}" />  
+                           </StackLayout>  
+                       </ViewCell>  
+                   </DataTemplate>  
+               </ListView.ItemTemplate>  
+            </ListView> 
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

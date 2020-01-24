@@ -1,15 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage
+<CarouselPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" x:Class="SLOCKED.MainPage"
->
-    <ContentPage.Content>
-        <StackLayout>
-            <!-- Place new controls here -->
-            <Label Text="Welcome to SLOCKED!" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    xmlns:local="clr-namespace:SLOCKED"
+    mc:Ignorable="d" x:Class="SLOCKED.MainPage">
+
+</CarouselPage>
