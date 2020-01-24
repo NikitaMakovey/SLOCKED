@@ -3,26 +3,23 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="using:SLOCKED"
 			 x:Class="SLOCKED.MasterPage"
-			 Padding="0,40,0,0"
-			 IconImageSource="http://yandex.ru"
-			 Title="Personal Organiser">
+			 Padding="10,40,0,0"
+			 IconImageSource="example.png"
+             BackgroundColor="GhostWhite"
+             Title="ПОГОДА"
+			 >
     <StackLayout>
         <ListView x:Name="listView" x:FieldModifier="public">
            <ListView.ItemsSource>
                 <x:Array Type="{x:Type local:MasterPageItem}">
                     <local:MasterPageItem
-                        Title="Поиск города"
-                        IconSource="http://yandex.ru"
+                        Title="ПОИСК ГОРОДА"
+                        IconSource="example.png"
                         TargetType="{x:Type local:SearchPage}"
                     />
                     <local:MasterPageItem
-                        Title="Главное"
-                        IconSource="http://yandex.ru"
-                        TargetType="{x:Type local:MainPage}"
-                    />
-                    <local:MasterPageItem
-                        Title="Обратно"
-                        IconSource="http://yandex.ru"
+                        Title="ГЛАВНОЕ"
+                        IconSource="example.png"
                         TargetType="{x:Type local:MainPage}"
                     />
                 </x:Array>

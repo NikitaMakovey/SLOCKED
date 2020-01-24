@@ -39,6 +39,7 @@ namespace SLOCKED
                 var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 var filename = Path.Combine(path, jsonLikedFileName);
 
+                
                 if (!File.Exists(filename))
                 {
                     File.Create(filename);

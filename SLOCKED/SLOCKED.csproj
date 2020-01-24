@@ -23,10 +23,6 @@
     <None Remove="citylist.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="citylikedlist.json">
-      <SubType></SubType>
-      <Generator></Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="citylist.json">
       <SubType></SubType>
       <Generator></Generator>

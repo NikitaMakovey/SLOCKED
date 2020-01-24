@@ -9,9 +9,9 @@
         <StackLayout>
             <SearchBar
                 BackgroundColor="DarkGray"
-                TextColor="Brown"
-                PlaceholderColor="Brown"
-                CancelButtonColor="Brown"
+                TextColor="#1A1D1E"
+                PlaceholderColor="#1A1D1E"
+                CancelButtonColor="#1A1D1E"
                 TextChanged="SearchBar_TextChanged"
             ></SearchBar>
             <ListView
