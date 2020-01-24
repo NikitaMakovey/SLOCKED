@@ -11,7 +11,7 @@ autom4te.cache/
 tarballs/
 test-results/
 
-./SLOCKED.Android/Resources/Resource.designer.cs
+SLOCKED.Android/Resources/Resource.designer.cs
 
 # Mac bundle stuff
 *.dmg

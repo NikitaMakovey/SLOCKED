@@ -16,6 +16,7 @@
             ></SearchBar>
             <ListView
                 x:Name="CityListView"
+                ItemTapped="CityListView_ItemTapped"
             >  
                 <ListView.ItemTemplate>  
                    <DataTemplate>  

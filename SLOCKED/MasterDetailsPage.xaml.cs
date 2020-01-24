@@ -11,10 +11,12 @@ namespace SLOCKED
     public static class ThreadAction
     {
         public static List<City> cities = new List<City>();
+        public static List<LikedCity> likedCities = new List<LikedCity>();
 
         public static async Task WriteCityData()
         {
             string jsonFileName = "citylist.json";
+            string jsonLikedFileName = "citylikedlist.json";
 
             if (cities.Count == 0)
             {
@@ -31,8 +33,30 @@ namespace SLOCKED
                             cities = JsonConvert.DeserializeObject<List<City>>(json);
                         }
                     }
+
                 }
+
+                var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var filename = Path.Combine(path, jsonLikedFileName);
+
+                if (!File.Exists(filename))
+                {
+                    File.CreateText(filename);
+                }
+                else
+                {
+                    using (var reader = new StreamReader(filename))
+                    {
+                        string json = reader.ReadToEnd();
+                        if (json != "")
+                        {
+                            likedCities = JsonConvert.DeserializeObject<List<LikedCity>>(json);
+                        }
+                    }
+                }
+
             }
+            
         }
     }
 

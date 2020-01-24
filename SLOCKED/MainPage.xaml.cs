@@ -16,24 +16,54 @@ namespace SLOCKED
         public MainPage()
         {
             InitializeComponent();
-            Color[] colors = { Color.Gray, Color.Gold, Color.Chocolate, Color.Green, Color.Blue };
-            foreach (Color c in colors)
+
+            if (ThreadAction.likedCities.Count == 0)
             {
+                LikedCity likedCity = new LikedCity();
+                likedCity.name = "Moscow";
+                likedCity.country = "RU";
                 this.Children.Add(new ContentPage
                 {
                     Content = new StackLayout
                     {
                         Children = {
                             new Label {
-                                Text = c.Saturation.ToString ()
+                                Text = likedCity.name.ToString()
+                            },
+                            new Label {
+                                Text = likedCity.country.ToString()
                             },
                             new BoxView {
-                                Color = c,
+                                Color = Color.Gray,
                                 VerticalOptions = LayoutOptions.FillAndExpand
                             }
                         }
                     }
                 });
+            }
+            else
+            {
+                foreach (LikedCity likedCity in ThreadAction.likedCities)
+                {
+                    this.Children.Add(new ContentPage
+                    {
+                        Content = new StackLayout
+                        {
+                            Children = {
+                                new Label {
+                                    Text = likedCity.name.ToString()
+                                },
+                                new Label {
+                                    Text = likedCity.country.ToString()
+                                },
+                                new BoxView {
+                                    Color = Color.Gray,
+                                    VerticalOptions = LayoutOptions.FillAndExpand
+                                }
+                            }
+                        }
+                    });
+                }
             }
         }
     }

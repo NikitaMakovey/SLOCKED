@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 namespace SLOCKED
 {
-    public class CitySet
-    {
-        public SortedSet<City> citySet { get; set; }
-    }
-
     public class City
     {
         public long id { get; set; }
@@ -21,5 +16,11 @@ namespace SLOCKED
     {
         public double lon { get; set; }
         public double lat { get; set; }
+    }
+
+    public class LikedCity
+    {
+        public string name { get; set; }
+        public string country { get; set; }
     }
 }
