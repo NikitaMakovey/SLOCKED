@@ -41,7 +41,7 @@ namespace SLOCKED
 
                 if (!File.Exists(filename))
                 {
-                    File.CreateText(filename);
+                    File.Create(filename);
                 }
                 else
                 {
