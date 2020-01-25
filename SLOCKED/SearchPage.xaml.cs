@@ -50,6 +50,7 @@ namespace SLOCKED
             if (!isContains)
             {
                 ThreadAction.likedCities.Add(details);
+                TransportPush($"{details.name}, {details.country}");
 
                 string fileName = "citylikedlist.json";
                 var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -60,6 +61,41 @@ namespace SLOCKED
             }
 
             Navigation.PushAsync(new MainPage());
+        }
+
+        public async void TransportPush(string location)
+        {
+            TransportData x = await MainPage.GetWeatherData(location, true);
+
+            if (ThreadAction.savedCities.Count == 0)
+            {
+                foreach (var w in ThreadAction.likedCities)
+                {
+                    if (w.name != x.weatherData.name)
+                    {
+                        TransportData z = await MainPage.GetWeatherData($"{w.name}, {w.country}", true);
+                        ThreadAction.savedCities.Add(z);
+                    }
+                }
+            }
+
+            ThreadAction.savedCities.Add(x);
+
+            var y = await MainPage.GetLocationData();
+            if (y != null)
+            {
+                TransportData y_ = await MainPage.GetWeatherData(y, true);
+                if (ThreadAction.savedCities.Contains(y_) != true)
+                {
+                    ThreadAction.savedCities.Add(y_);
+                }
+            }
+            string fileSavedName = "citysavedlist.json";
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var filename = Path.Combine(path, fileSavedName);
+
+            string data = JsonConvert.SerializeObject(ThreadAction.savedCities);
+            File.WriteAllText(filename, data);
         }
     }
 }

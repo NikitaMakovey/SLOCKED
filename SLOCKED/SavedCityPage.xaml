@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SLOCKED;assembly=SLOCKED"
+    x:Class="SLOCKED.SavedCityPage"
+>
+    <ListView
+        x:Name="SavedListView"
+        SelectionMode="None"
+        ItemTapped="SavedListView_ItemTapped"
+        IsPullToRefreshEnabled="True"
+    >  
+        <ListView.ItemTemplate>  
+            <DataTemplate>  
+                <ViewCell>
+                    <StackLayout Orientation="Vertical" Padding="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Label Text="X" TextColor="Red"/>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Label Text="{Binding weatherData.name}" FontAttributes="Bold"/>
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <Label Text="-" FontAttributes="Bold"/>
+                            </Grid>
+                            <Grid Grid.Column="3">
+                                <Label Text="{Binding weatherData.sys.country}" FontAttributes="Bold"/> 
+                            </Grid>
+                        </Grid>
+                    </StackLayout>
+                </ViewCell>  
+            </DataTemplate>  
+        </ListView.ItemTemplate>  
+    </ListView> 
+</ContentPage>

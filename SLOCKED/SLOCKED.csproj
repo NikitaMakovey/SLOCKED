@@ -21,6 +21,7 @@
     <None Remove="city.liked.list.json" />
     <None Remove="city.list.json" />
     <None Remove="citylist.json" />
+    <None Remove="citylikedlist.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="citylist.json">

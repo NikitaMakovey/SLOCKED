@@ -43,43 +43,19 @@ namespace SLOCKED
             }
             else
             {
-                var xxx = new TransportData();
+                DisplayAlert(
+                    "НЕТ ДОСТУПА К ИНТЕРНЕТУ",
+                    "ПОДКЛЮЧИТЕСЬ К ИНТЕРНЕТУ ДЛЯ ОТОБРАЖЕНИЯ ПРИЛОЖЕНИЕМ АКТУАЛЬНОЙ ИНФОРМАЦИИ",
+                    "ХОРОШО"
+                    );
 
-                WeatherData weatherData = new WeatherData();
-
-                weatherData.main = new Main();
-                weatherData.main.temp = 1.83F;
-                weatherData.weather = new Weather[1];
-                weatherData.weather[0] = new Weather();
-                weatherData.weather[0].icon = "w02n";
-                weatherData.weather[0].main = "Clouds";
-                weatherData.weather[0].description = "Small snow".ToUpper();
-                weatherData.name = "Moscow";
-                weatherData.dt = 1579875087;
-                weatherData.timezone = 10800;
-
-                List<List> forecastList = new List<List>();
-
-                for (int i = 0; i < 4; i++)
+                foreach (TransportData transport in ThreadAction.savedCities)
                 {
-                    var x = new List();
-                    x.dt_txt = "2020-01-24 18:00:00";
-                    x.weather = new Weather[1];
-                    x.weather[0] = new Weather();
-                    x.weather[0].icon = "03n";
-                    x.main = new Main();
-                    x.main.temp = 24.56F;
-                    forecastList.Add(x);
+                    this.Children.Add(new ContentPage
+                    {
+                        Content = builder(transport)
+                    });
                 }
-
-                xxx.forecastList = forecastList;
-                xxx.imageSource = "weather.jpeg";
-                xxx.weatherData = weatherData;
-
-                this.Children.Add(new ContentPage
-                {
-                    Content = builder(xxx)
-                });
             }
         }
 
@@ -108,7 +84,7 @@ namespace SLOCKED
             });
         }
 
-        private async Task<string> GetLocationData()
+        public static async Task<string> GetLocationData()
         {
             try
             {
@@ -131,7 +107,7 @@ namespace SLOCKED
 
         }
 
-        private async Task<string> GetCityData(Location location)
+        public static async Task<string> GetCityData(Location location)
         {
             var places = await Geocoding.GetPlacemarksAsync(location);
             var currentPlace = places?.FirstOrDefault();
@@ -146,17 +122,34 @@ namespace SLOCKED
             }
         }
 
-        private async Task<TransportData> GetWeatherData(string location)
+        public static async Task<TransportData> GetWeatherData(string location, bool isNotConnect = false)
         {
-            var url = $"http://api.openweathermap.org/data/2.5/weather?q={location}&appid=d5d3293da42803e2680954b8ee1e7352&units=metric";
+            var url = $"http://api.openweathermap.org/data/2.5/weather?q={location}&lang=ru&appid=d5d3293da42803e2680954b8ee1e7352&units=metric";
 
             var result = await HttpGet(url);
 
             if (result.Successful)
             {
+                if (isNotConnect)
+                {
+                    var weatherData_ = JsonConvert.DeserializeObject<WeatherData>(result.Response);
+                    weatherData_.weather[0].description = weatherData_.weather[0].description.ToUpper();
+                    weatherData_.weather[0].icon = $"w{weatherData_.weather[0].icon}";
+                    weatherData_.name = weatherData_.name.ToUpper();
+
+                    List<List> forecastData_ = await GetForecastData(location, isNotConnect);
+                    ImageSource imageSource_ = "weather.jpeg";
+
+                    var x_ = new TransportData();
+                    x_.weatherData = weatherData_;
+                    x_.forecastList = forecastData_;
+                    x_.imageSource = imageSource_;
+                    return x_;
+                }
+
                 var weatherData = JsonConvert.DeserializeObject<WeatherData>(result.Response);
                 weatherData.weather[0].description = weatherData.weather[0].description.ToUpper();
-                weatherData.weather[0].icon = $"w{weatherData.weather[0].icon}";
+                weatherData.weather[0].icon = $"http://openweathermap.org/img/wn/{weatherData.weather[0].icon}@2x.png";
                 weatherData.name = weatherData.name.ToUpper();
 
                 List<List> forecastData = await GetForecastData(location);
@@ -174,13 +167,36 @@ namespace SLOCKED
             }
         }
 
-        private async Task<List<List>> GetForecastData(string location)
+        public static async Task<List<List>> GetForecastData(string location, bool isNotConnect = false)
         {
             var url = $"http://api.openweathermap.org/data/2.5/forecast?q={location}&appid=46c92660db5542fbe26f7a1f2a694943&units=metric";
             var result = await HttpGet(url);
 
             if (result.Successful)
             {
+                if (isNotConnect)
+                {
+                    var forecastData_ = JsonConvert.DeserializeObject<ForecastData>(result.Response);
+
+                    List<List> forecastList_ = new List<List>();
+
+                    long index_ = 0;
+
+                    foreach (var list in forecastData_.list)
+                    {
+                        var date = DateTime.Parse(list.dt_txt);
+
+                        if (index_ % 8 == 0 && index_ != 0)
+                        {
+                            list.weather[0].icon = $"{list.weather[0].icon}";
+                            forecastList_.Add(list);
+                        }
+
+                        index_++;
+                    }
+
+                    return forecastList_;
+                }
 
                 var forecastData = JsonConvert.DeserializeObject<ForecastData>(result.Response);
 
@@ -194,6 +210,7 @@ namespace SLOCKED
 
                     if (index % 8 == 0 && index != 0)
                     {
+                        list.weather[0].icon = $"http://openweathermap.org/img/wn/{list.weather[0].icon}@2x.png";
                         forecastList.Add(list);
                     }
 
@@ -209,7 +226,7 @@ namespace SLOCKED
             }
         }
 
-        private async Task<ImageSource> GetBackgroundImage(string main)
+        public static async Task<ImageSource> GetBackgroundImage(string main)
         {
             var url = $"https://api.pexels.com/v1/search?query={main}&per_page=15&page=1";
 
@@ -326,7 +343,9 @@ namespace SLOCKED
 
             var imageStack2_1 = new Image
             {
-                Source = data.weatherData.weather[0].icon,
+                Source = data.weatherData.weather[0].icon.Length > 5 ?
+                    ImageSource.FromUri(new Uri(data.weatherData.weather[0].icon)) :
+                    $"{data.weatherData.weather[0].icon}",
                 WidthRequest = 67,
                 HeightRequest = 50
             };
@@ -499,7 +518,9 @@ namespace SLOCKED
 
             var grid__1_stack_image = new Image
             {
-                Source = $"w{data.forecastList[0].weather[0].icon}",
+                Source = data.forecastList[0].weather[0].icon.Length > 5 ?
+                    ImageSource.FromUri(new Uri(data.forecastList[1].weather[0].icon)) :
+                    $"w{data.forecastList[0].weather[0].icon}",
                 Margin = new Thickness(0, 20),
                 WidthRequest = 30,
                 HeightRequest = 22
@@ -574,7 +595,9 @@ namespace SLOCKED
 
             var grid__2_stack_image = new Image
             {
-                Source = $"w{data.forecastList[1].weather[0].icon}",
+                Source = data.forecastList[1].weather[0].icon.Length > 5 ?
+                    ImageSource.FromUri(new Uri(data.forecastList[1].weather[0].icon)) :
+                    $"w{data.forecastList[1].weather[0].icon}",
                 Margin = new Thickness(0, 20),
                 WidthRequest = 30,
                 HeightRequest = 22
@@ -649,7 +672,9 @@ namespace SLOCKED
 
             var grid__3_stack_image = new Image
             {
-                Source = $"w{data.forecastList[2].weather[0].icon}",
+                Source = data.forecastList[2].weather[0].icon.Length > 5 ?
+                    ImageSource.FromUri(new Uri(data.forecastList[2].weather[0].icon)) :
+                    $"w{data.forecastList[2].weather[0].icon}",
                 Margin = new Thickness(0, 20),
                 WidthRequest = 30,
                 HeightRequest = 22
@@ -724,7 +749,9 @@ namespace SLOCKED
 
             var grid__4_stack_image = new Image
             {
-                Source = $"w{data.forecastList[3].weather[0].icon}",
+                Source = data.forecastList[3].weather[0].icon.Length > 5 ?
+                    ImageSource.FromUri(new Uri(data.forecastList[3].weather[0].icon)) :
+                    $"w{data.forecastList[3].weather[0].icon}",
                 Margin = new Thickness(0, 20),
                 WidthRequest = 30,
                 HeightRequest = 22

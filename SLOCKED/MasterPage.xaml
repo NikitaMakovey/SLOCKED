@@ -22,6 +22,11 @@
                         IconSource="example.png"
                         TargetType="{x:Type local:MainPage}"
                     />
+                    <local:MasterPageItem
+                        Title="ИСТОРИЯ"
+                        IconSource="example.png"
+                        TargetType="{x:Type local:SavedCityPage}"
+                    />
                 </x:Array>
             </ListView.ItemsSource>
             <ListView.ItemTemplate>
